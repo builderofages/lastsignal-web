@@ -3,180 +3,597 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - Last Signal</title>
+    <title>Terms of Service â Last Signal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cyan: #00f0ff;
+            --cyan-dim: #00a5b0;
+            --purple: #a855f7;
+            --purple-dim: #7c3aed;
+            --magenta: #f472b6;
+            --orange: #fb923c;
+            --green: #4ade80;
+            --bg-deep: #030712;
+            --bg-card: rgba(10, 15, 30, 0.85);
+            --text: #c8d6e5;
+            --text-dim: #6b7a8d;
+            --border: rgba(0, 240, 255, 0.12);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif; background: linear-gradient(135deg, #0a0a15 0%, #0f0f1e 100%); color: #d0d0e0; line-height: 1.7; min-height: 100vh; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background: rgba(15, 15, 30, 0.95); border: 1px solid rgba(50, 100, 200, 0.2); border-radius: 12px; padding: 60px 40px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
-        header { text-align: center; margin-bottom: 50px; padding-bottom: 30px; border-bottom: 2px solid rgba(50, 100, 200, 0.3); }
-        h1 { font-size: 2.5em; color: #4db8ff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(77, 184, 255, 0.3); }
-        .game-title { font-size: 1.1em; color: #8899dd; margin-bottom: 5px; }
-        .developer { font-size: 0.95em; color: #6699bb; margin-bottom: 10px; }
-        .update-date { font-size: 0.9em; color: #5577aa; font-style: italic; }
-        h2 { font-size: 1.6em; color: #6db3ff; margin-top: 40px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid rgba(50, 100, 200, 0.2); }
-        h3 { font-size: 1.2em; color: #9acc99; margin-top: 25px; margin-bottom: 12px; }
-        p { margin-bottom: 15px; }
-        ul, ol { margin-left: 25px; margin-bottom: 15px; }
-        li { margin-bottom: 8px; color: #c0c0d0; }
-        strong { color: #aabbff; font-weight: 600; }
-        .section-box { background: rgba(20, 30, 50, 0.8); border-left: 4px solid #4db8ff; padding: 20px; margin: 20px 0; border-radius: 4px; }
-        .warning-box { background: rgba(50, 30, 20, 0.8); border-left: 4px solid #ff8844; padding: 20px; margin: 20px 0; border-radius: 4px; }
-        .contact-box { background: rgba(30, 20, 50, 0.8); border-left: 4px solid #bb99ff; padding: 20px; margin: 30px 0; border-radius: 4px; text-align: center; }
-        .contact-box a { color: #bb99ff; text-decoration: none; font-weight: 600; }
-        .contact-box a:hover { text-decoration: underline; color: #dd99ff; }
-        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(50, 100, 200, 0.2); text-align: center; font-size: 0.9em; color: #5577aa; }
-        a { color: #6db3ff; text-decoration: none; }
-        a:hover { text-decoration: underline; color: #8acc99; }
-        .rights { margin-top: 10px; font-size: 0.85em; color: #4466aa; }
-        @media (max-width: 768px) { .container { padding: 30px 20px; } h1 { font-size: 1.8em; } h2 { font-size: 1.3em; } }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            line-height: 1.75;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ââ Animated starfield ââââââââââââââââââââââââââââ */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .stars canvas { width: 100%; height: 100%; }
+
+        /* ââ Gradient aurora top âââââââââââââââââââââââââââ */
+        .aurora {
+            position: fixed;
+            top: -40%; left: -20%; width: 140%; height: 80%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0,240,255,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 40%, rgba(168,85,247,0.05) 0%, transparent 55%),
+                        radial-gradient(ellipse at 50% 10%, rgba(244,114,182,0.04) 0%, transparent 50%);
+            z-index: 0;
+            animation: aurora-drift 20s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes aurora-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 15px) scale(1.05); }
+        }
+
+        /* ââ Floating signal pulse ââââââââââââââââââââââââ */
+        .signal-pulse {
+            position: fixed;
+            bottom: 10%; right: 8%;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,240,255,0.08) 0%, transparent 70%);
+            animation: pulse-glow 4s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
+
+        /* ââ Container ââââââââââââââââââââââââââââââââââââ */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* ââ Hero header ââââââââââââââââââââââââââââââââââ */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 50px;
+            margin-bottom: 40px;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border: 1px solid var(--cyan);
+            border-radius: 100px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7em;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 24px;
+            background: rgba(0,240,255,0.05);
+            animation: badge-flicker 3s ease-in-out infinite;
+        }
+        @keyframes badge-flicker {
+            0%, 90%, 100% { opacity: 1; }
+            92% { opacity: 0.4; }
+            94% { opacity: 1; }
+            96% { opacity: 0.6; }
+        }
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2em, 5vw, 3.2em);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--purple), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .hero-sub {
+            font-size: 1.05em;
+            color: var(--text-dim);
+            font-weight: 300;
+        }
+        .hero-sub strong {
+            color: var(--cyan-dim);
+            font-weight: 500;
+        }
+        .hero-date {
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: var(--text-dim);
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+        }
+
+        /* ââ Cards ââââââââââââââââââââââââââââââââââââââââ */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 32px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s, transform 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(0, 240, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .card-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+        .card-icon.cyan { background: rgba(0,240,255,0.12); }
+        .card-icon.purple { background: rgba(168,85,247,0.12); }
+        .card-icon.orange { background: rgba(251,146,60,0.12); }
+        .card-icon.green { background: rgba(74,222,128,0.12); }
+        .card-icon.magenta { background: rgba(244,114,182,0.12); }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #e2e8f0;
+            letter-spacing: 0.5px;
+        }
+        .card-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7em;
+            color: var(--cyan-dim);
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ââ Content styling ââââââââââââââââââââââââââââââ */
+        p { margin-bottom: 14px; }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 14px;
+        }
+        li {
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        li::marker { color: var(--cyan-dim); }
+
+        strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--cyan);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        a:hover {
+            border-bottom-color: var(--cyan);
+        }
+
+        /* ââ Alert boxes ââââââââââââââââââââââââââââââââââ */
+        .alert {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-size: 0.95em;
+        }
+        .alert.warn {
+            background: rgba(251,146,60,0.08);
+            border: 1px solid rgba(251,146,60,0.2);
+            border-left: 3px solid var(--orange);
+        }
+        .alert.info {
+            background: rgba(0,240,255,0.05);
+            border: 1px solid rgba(0,240,255,0.15);
+            border-left: 3px solid var(--cyan);
+        }
+        .alert.warn strong { color: var(--orange); }
+
+        /* ââ Contact box ââââââââââââââââââââââââââââââââââ */
+        .contact-card {
+            background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(0,240,255,0.08));
+            border: 1px solid rgba(168,85,247,0.2);
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+            margin-top: 32px;
+        }
+        .contact-card .emoji { font-size: 2em; margin-bottom: 12px; }
+        .contact-card a {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1em;
+            color: var(--purple);
+            border-bottom: 1px dashed rgba(168,85,247,0.4);
+        }
+        .contact-card a:hover { border-bottom-style: solid; }
+        .contact-card .response-time {
+            margin-top: 12px;
+            font-size: 0.85em;
+            color: var(--text-dim);
+        }
+
+        /* ââ Footer âââââââââââââââââââââââââââââââââââââââ */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9em;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        .footer-links a {
+            color: var(--text-dim);
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--cyan); }
+        .footer-copy {
+            font-size: 0.8em;
+            color: #3a4555;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+        }
+
+        /* ââ Scroll reveal ââââââââââââââââââââââââââââââââ */
+        .card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: reveal 0.5s ease forwards;
+        }
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+        .card:nth-child(7) { animation-delay: 0.35s; }
+        .card:nth-child(8) { animation-delay: 0.4s; }
+        .card:nth-child(9) { animation-delay: 0.45s; }
+        .card:nth-child(10) { animation-delay: 0.5s; }
+        .card:nth-child(11) { animation-delay: 0.55s; }
+        .card:nth-child(12) { animation-delay: 0.6s; }
+        .card:nth-child(13) { animation-delay: 0.65s; }
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 14px 40px; }
+            .hero { padding: 40px 10px 30px; }
+            .card { padding: 24px 18px; }
+        }
     </style>
 </head>
 <body>
+    <div class="aurora"></div>
+    <div class="signal-pulse"></div>
+    <canvas class="stars" id="starfield"></canvas>
+
     <div class="container">
-        <header>
-            <div class="game-title">Last Signal</div>
+        <div class="hero">
+            <div class="hero-badge">Last Signal</div>
             <h1>Terms of Service</h1>
-            <div class="developer">Builder of Ages</div>
-            <div class="update-date">Last updated: March 2026</div>
-        </header>
-        <h2>1. Acceptance of Terms</h2>
-        <div class="section-box">
-            <p>By downloading, installing, or playing <strong>Last Signal</strong> ("the Game"), you agree to be bound by these Terms of Service ("Terms"). If you do not accept these Terms, you may not access or use the Game.</p>
-            <p>These Terms apply to all users, including guests and registered players. We reserve the right to modify these Terms at any time. Your continued use of the Game constitutes acceptance of updated Terms.</p>
+            <p class="hero-sub">The rules of survival â brought to you by <strong>Builder of Ages</strong></p>
+            <div class="hero-date">Updated March 2026</div>
         </div>
-        <h2>2. License to Play</h2>
-        <p>Builder of Ages grants you a <strong>limited, non-exclusive, non-transferable, and revocable license</strong> to:</p>
-        <ul>
-            <li>Download and install the Game on your personal device</li>
-            <li>Play the Game for personal, non-commercial entertainment purposes</li>
-            <li>Access Game features and content as provided</li>
-        </ul>
-        <p><strong>Restrictions:</strong> You may NOT:</p>
-        <ul>
-            <li>Modify, translate, or create derivative works of the Game</li>
-            <li>Reverse engineer, decompile, or disassemble the Game</li>
-            <li>Rent, lease, sell, or transfer the Game to others</li>
-            <li>Remove copyright notices or proprietary markings</li>
-            <li>Use the Game for commercial purposes</li>
-        </ul>
-        <h2>3. In-App Purchases</h2>
-        <h3>Virtual Currency and Items</h3>
-        <p>Last Signal offers in-app purchases of virtual currency (Coins and Gems) and cosmetic items. These purchases are <strong>non-refundable except as required by law.</strong></p>
-        <h3>Important Terms:</h3>
-        <ul>
-            <li><strong>Virtual Currency Has No Real Value:</strong> Virtual currency and items have no cash value and cannot be exchanged for real money</li>
-            <li><strong>Non-Refundable:</strong> Purchases are final. We do not offer refunds unless required by applicable law or platform policy</li>
-            <li><strong>Subject to Change:</strong> Item prices, availability, and currency exchange rates may change without notice</li>
-            <li><strong>Account-Bound:</strong> Virtual items are bound to your account and cannot be transferred</li>
-            <li><strong>Forfeiture on Deletion:</strong> Deleting your account will result in loss of all virtual currency and items</li>
-        </ul>
-        <h3>Refund Policy</h3>
-        <p>For refunds on in-app purchases:</p>
-        <ul>
-            <li><strong>App Store (iOS):</strong> Contact Apple within 14 days via Settings &gt; Your Name &gt; Purchase History</li>
-            <li><strong>Google Play (Android):</strong> Request a refund within 48 hours via your Google Play account</li>
-        </ul>
-        <p>We honor platform-specific refund policies. Additional disputes should be directed to the platform provider.</p>
-        <h2>4. User Conduct and Prohibited Behavior</h2>
-        <div class="warning-box">
-            <p>You agree not to engage in any of the following activities while using Last Signal:</p>
+
+        <!-- 1. Acceptance -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon cyan">&#x1F91D;</div>
+                <div>
+                    <span class="card-number">01</span>
+                    <div class="card-title">Acceptance of Terms</div>
+                </div>
+            </div>
+            <div class="alert info">
+                <p>By downloading, installing, or playing <strong>Last Signal</strong> ("the Game"), you agree to these Terms of Service ("Terms"). If you don't agree, you may not access or use the Game.</p>
+            </div>
+            <p>These Terms cover all users â guests and registered survivors alike. We may update them from time to time, and continued play means you're on board with the latest version.</p>
+        </div>
+
+        <!-- 2. License -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon purple">&#x1F4DC;</div>
+                <div>
+                    <span class="card-number">02</span>
+                    <div class="card-title">License to Play</div>
+                </div>
+            </div>
+            <p>Builder of Ages grants you a <strong>limited, non-exclusive, non-transferable, revocable license</strong> to download, install, and play the Game on your personal device for non-commercial entertainment.</p>
+            <p><strong>What you can't do:</strong></p>
             <ul>
-                <li><strong>Cheating:</strong> Using exploits, glitches, or unauthorized methods to gain unfair advantages</li>
-                <li><strong>Hacking:</strong> Attempting to gain unauthorized access to accounts, servers, or backend systems</li>
-                <li><strong>Exploiting:</strong> Exploiting game mechanics, bugs, or technical vulnerabilities</li>
-                <li><strong>Harassment:</strong> Engaging in abusive, offensive, or threatening behavior toward other players</li>
-                <li><strong>Fraud:</strong> Using fraudulent payment methods or false information</li>
-                <li><strong>Bot Use:</strong> Using automated tools or bots to play the Game</li>
+                <li>Modify, reverse engineer, decompile, or create derivative works</li>
+                <li>Rent, sell, lease, or transfer the Game</li>
+                <li>Remove copyright notices or proprietary markings</li>
+                <li>Use the Game for commercial purposes</li>
             </ul>
         </div>
-        <h2>5. Account Termination</h2>
-        <h3>Termination by You</h3>
-        <p>You may delete your account at any time. Upon deletion, your personal data will be deleted within 30 days, all virtual currency and items will be forfeited, and your leaderboard entries may be anonymized.</p>
-        <h3>Termination by Us</h3>
-        <p>We may suspend or terminate your account at any time if you violate these Terms, engage in fraudulent or illegal activity, repeatedly exploit game mechanics or bugs, or violate our privacy or intellectual property rights.</p>
-        <h2>6. Warranty Disclaimer</h2>
-        <div class="warning-box">
-            <p><strong>THE GAME IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.</strong> We disclaim all warranties including merchantability, fitness for a particular purpose, title and non-infringement, and uninterrupted or error-free operation. We do not guarantee the Game will meet your expectations, function on all devices, or maintain server uptime.</p>
+
+        <!-- 3. In-App Purchases -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#x1F4B0;</div>
+                <div>
+                    <span class="card-number">03</span>
+                    <div class="card-title">In-App Purchases</div>
+                </div>
+            </div>
+            <p>Last Signal offers optional in-app purchases for virtual currency (Coins &amp; Gems) and cosmetic items.</p>
+            <div class="alert warn">
+                <p><strong>Key points:</strong> Virtual currency has no real-world cash value. Purchases are non-refundable except as required by law. Prices and availability may change. Items are account-bound and lost upon account deletion.</p>
+            </div>
+            <p><strong>Refunds:</strong></p>
+            <ul>
+                <li><strong>iOS:</strong> Contact Apple within 14 days via Settings &rarr; Your Name &rarr; Purchase History</li>
+                <li><strong>Android:</strong> Request via your Google Play account within 48 hours</li>
+            </ul>
+            <p>We honor platform refund policies. For disputes, contact the platform provider directly.</p>
         </div>
-        <h2>7. Limitation of Liability</h2>
-        <div class="warning-box">
-            <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW:</strong> Builder of Ages and its affiliates will not be liable for loss of data, progress, or virtual items; server downtime or service interruptions; indirect, incidental, or consequential damages; lost profits; account suspension; third-party conduct; or unauthorized access to your account.</p>
-            <p><strong>OUR TOTAL LIABILITY IS LIMITED TO THE AMOUNT YOU PAID FOR IN-APP PURCHASES IN THE PAST 12 MONTHS, OR $10, WHICHEVER IS GREATER.</strong></p>
+
+        <!-- 4. User Conduct -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon orange">&#x26A0;&#xFE0F;</div>
+                <div>
+                    <span class="card-number">04</span>
+                    <div class="card-title">User Conduct</div>
+                </div>
+            </div>
+            <div class="alert warn">
+                <p><strong>Don't ruin it for everyone.</strong> The following will get you benched:</p>
+            </div>
+            <ul>
+                <li><strong>Cheating</strong> â Exploits, glitches, or unauthorized advantages</li>
+                <li><strong>Hacking</strong> â Unauthorized access to accounts, servers, or backends</li>
+                <li><strong>Bug exploitation</strong> â Using bugs or vulnerabilities for gain</li>
+                <li><strong>Griefing</strong> â Intentionally disrupting others' gameplay</li>
+                <li><strong>Harassment</strong> â Abusive, offensive, or threatening behavior</li>
+                <li><strong>Fraud</strong> â Fake payment methods or false info</li>
+                <li><strong>Bots</strong> â Automated tools playing the Game</li>
+                <li><strong>Account sharing</strong> â Sharing or selling accounts</li>
+            </ul>
+            <p><strong>Enforcement:</strong> Violations may result in warnings, temporary suspension, permanent bans, forfeiture of items/currency, or legal referrals.</p>
         </div>
-        <h2>8. Governing Law</h2>
-        <p>These Terms are governed by the laws of the United States of America. Any dispute shall be resolved through good faith negotiation, binding arbitration (if applicable in your jurisdiction), or mediation (if required by local law).</p>
-        <h2>9. Changes to These Terms</h2>
-        <p>We may update these Terms at any time. We will notify you by updating the "Last updated" date above and posting changes within the Game. Your continued use after changes become effective constitutes acceptance.</p>
-        <h2>10. Intellectual Property</h2>
-        <p>All content in Last Signal, including graphics, characters, storylines, game mechanics, code, and music, is the exclusive property of Builder of Ages and is protected by copyright and other intellectual property laws. You may not reproduce, distribute, or publicly display any Game content without written permission.</p>
-        <h2>11. Third-Party Services</h2>
-        <p>Last Signal uses third-party services (AppLovin, RevenueCat, Firebase, Supabase) governed by their own terms and privacy policies. We are not responsible for third-party conduct, data breaches, or service interruptions.</p>
-        <h2>12. Severability</h2>
-        <p>If any provision of these Terms is found invalid or unenforceable, such provision shall be modified to the minimum extent necessary to make it valid, or severed. The remaining provisions shall continue in full force and effect.</p>
-        <h2>13. Contact Us</h2>
-        <div class="contact-box">
-            <p>For questions or concerns about these Terms of Service, please contact:</p>
-            <p><strong>Email:</strong> <a href="mailto:lastsignalgames@gmail.com">lastsignalgames@gmail.com</a></p>
-            <p style="margin-top: 15px; font-size: 0.9em; color: #7799bb;">We typically respond to inquiries within 7 business days.</p>
+
+        <!-- 5. Account Termination -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon magenta">&#x1F6AA;</div>
+                <div>
+                    <span class="card-number">05</span>
+                    <div class="card-title">Account Termination</div>
+                </div>
+            </div>
+            <p><strong>By you:</strong> Delete your account anytime. Your personal data will be purged within 30 days, and all virtual items, currency, cloud saves, and multiplayer access will be gone for good.</p>
+            <p><strong>By us:</strong> We may suspend or terminate accounts that violate these Terms, engage in fraud, repeatedly exploit bugs, or have failing payment methods.</p>
         </div>
+
+        <!-- 6. Warranty Disclaimer -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon orange">&#x1F6E1;&#xFE0F;</div>
+                <div>
+                    <span class="card-number">06</span>
+                    <div class="card-title">Warranty Disclaimer</div>
+                </div>
+            </div>
+            <div class="alert warn">
+                <p><strong>THE GAME IS PROVIDED "AS IS."</strong> We make no warranties â express or implied â regarding merchantability, fitness for a particular purpose, uninterrupted operation, or data preservation. We don't guarantee the Game works on every device, stays online 24/7, or meets your expectations. We do try our best though.</p>
+            </div>
+        </div>
+
+        <!-- 7. Liability -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon purple">&#x2696;&#xFE0F;</div>
+                <div>
+                    <span class="card-number">07</span>
+                    <div class="card-title">Limitation of Liability</div>
+                </div>
+            </div>
+            <div class="alert warn">
+                <p>To the maximum extent permitted by law, Builder of Ages is not liable for lost data, lost progress, lost virtual items, server downtime, indirect or consequential damages, third-party conduct, or unauthorized account access.</p>
+                <p><strong>Maximum liability:</strong> The greater of what you paid for in-app purchases in the past 12 months, or $10.</p>
+            </div>
+        </div>
+
+        <!-- 8. Governing Law -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon cyan">&#x1F30D;</div>
+                <div>
+                    <span class="card-number">08</span>
+                    <div class="card-title">Governing Law</div>
+                </div>
+            </div>
+            <p>These Terms are governed by U.S. law. Disputes are resolved through good faith negotiation first, then binding arbitration (where applicable), then mediation if required by local law.</p>
+        </div>
+
+        <!-- 9. Changes -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#x1F504;</div>
+                <div>
+                    <span class="card-number">09</span>
+                    <div class="card-title">Changes to Terms</div>
+                </div>
+            </div>
+            <p>We may update these Terms. We'll let you know by updating the date at the top and posting changes in-game. Continued play = acceptance.</p>
+        </div>
+
+        <!-- 10. IP -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon purple">&#x00A9;</div>
+                <div>
+                    <span class="card-number">10</span>
+                    <div class="card-title">Intellectual Property</div>
+                </div>
+            </div>
+            <p>Everything in Last Signal â graphics, characters, storylines, code, music, UI, game mechanics â is the exclusive property of Builder of Ages and protected by copyright law. Don't reproduce, distribute, or publicly display Game content without written permission.</p>
+        </div>
+
+        <!-- 11. Third Party -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon cyan">&#x1F517;</div>
+                <div>
+                    <span class="card-number">11</span>
+                    <div class="card-title">Third-Party Services</div>
+                </div>
+            </div>
+            <p>Last Signal integrates with AppLovin, RevenueCat, Firebase, and Supabase â each governed by their own terms and privacy policies. We're not responsible for third-party conduct, data breaches, or service interruptions.</p>
+        </div>
+
+        <!-- 12. Severability -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon green">&#x2702;&#xFE0F;</div>
+                <div>
+                    <span class="card-number">12</span>
+                    <div class="card-title">Severability</div>
+                </div>
+            </div>
+            <p>If any part of these Terms is found invalid or unenforceable, it'll be modified to the minimum extent needed â or severed entirely. Everything else stays in full force.</p>
+        </div>
+
+        <!-- 13. Contact -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon magenta">&#x1F4E8;</div>
+                <div>
+                    <span class="card-number">13</span>
+                    <div class="card-title">Contact Us</div>
+                </div>
+            </div>
+            <div class="contact-card">
+                <div class="emoji">&#x1F4E1;</div>
+                <p>Got questions about these Terms? Send us a signal.</p>
+                <p><a href="mailto:lastsignalgames@gmail.com">lastsignalgames@gmail.com</a></p>
+                <p class="response-time">We typically respond within 7 business days</p>
+            </div>
+        </div>
+
         <footer>
-            <p><a href="terms.html">Terms of Service</a> | <a href="privacy.html">Privacy Policy</a></p>
-            <div class="rights">&copy; 2026 Builder of Ages. All rights reserved.</div>
+            <div class="footer-logo">LAST SIGNAL</div>
+            <div class="footer-links">
+                <a href="terms.html">Terms</a>
+                <a href="privacy.html">Privacy</a>
+            </div>
+            <div class="footer-copy">&copy; 2026 BUILDER OF AGES</div>
         </footer>
     </div>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms of Service - Last Signal</title>
-<style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6;color:#e0e0e0;background:#0a0a0a}
-h1{color:#00ff88;border-bottom:2px solid #00ff88;padding-bottom:10px}
-h2{color:#00cc6a;margin-top:30px}
-a{color:#00ff88}
-.updated{color:#888;font-size:0.9em}
-</style>
-</head>
-<body>
-<h1>Terms of Service</h1>
-<p class="updated">Last Updated: March 2026</p>
-<p>Welcome to Last Signal. By downloading or using the app, you agree to these terms.</p>
 
-<h2>1. Acceptance of Terms</h2>
-<p>By accessing or using Last Signal ("the Game"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Game.</p>
+    <script>
+    // Animated starfield
+    (function() {
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const COUNT = 120;
 
-<h2>2. License</h2>
-<p>We grant you a limited, non-exclusive, non-transferable, revocable license to use the Game for personal, non-commercial purposes on devices you own or control.</p>
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-<h2>3. In-App Purchases</h2>
-<p>The Game offers optional in-app purchases including gem packs, a starter pack, season pass, growth fund, and a Signal Prime subscription. All purchases are processed through Apple App Store or Google Play Store. Prices are displayed before purchase. Subscriptions auto-renew unless cancelled at least 24 hours before the end of the current period. Refunds are handled by the respective platform.</p>
+        function init() {
+            resize();
+            stars = [];
+            for (let i = 0; i < COUNT; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.5 + 0.3,
+                    speed: Math.random() * 0.3 + 0.05,
+                    flicker: Math.random() * Math.PI * 2
+                });
+            }
+        }
 
-<h2>4. User Conduct</h2>
-<p>You agree not to: reverse engineer, decompile, or disassemble the Game; use cheats, exploits, automation software, or any unauthorized third-party software; attempt to gain unauthorized access to any part of the Game or its systems; use the Game for any illegal or unauthorized purpose.</p>
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const time = Date.now() * 0.001;
+            stars.forEach(s => {
+                const alpha = 0.4 + Math.sin(time * 1.5 + s.flicker) * 0.3;
+                ctx.fillStyle = `rgba(180, 220, 255, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fill();
+                s.y -= s.speed;
+                if (s.y < -5) { s.y = canvas.height + 5; s.x = Math.random() * canvas.width; }
+            });
+            requestAnimationFrame(draw);
+        }
 
-<h2>5. Intellectual Property</h2>
-<p>All content in the Game, including but not limited to graphics, gameplay, music, text, and code, is owned by Last Signal Games and protected by intellectual property laws. You may not copy, modify, distribute, or create derivative works.</p>
-
-<h2>6. Account and Data</h2>
-<p>Game progress is stored locally on your device. We are not responsible for lost progress due to device changes, app deletion, or technical issues. Optional cloud features may be available through platform services.</p>
-
-<h2>7. Advertisements</h2>
-<p>The Game displays ads through AppLovin MAX. You may remove ads by subscribing to Signal Prime. Ad content is provided by third-party networks and we do not control their content.</p>
-
-<h2>8. Disclaimer of Warranties</h2>
-<p>The Game is provided "as is" without warranties of any kind. We do not guarantee uninterrupted or error-free operation.</p>
-
-<h2>9. Limitation of Liability</h2>
-<p>To the maximum extent permitted by law, Last Signal Games shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Game.</p>
-
-<h2>10. Changes to Terms</h2>
-<p>We may update these terms at any time. Continued use of the Game after changes constitutes acceptance of the new terms.</p>
-
-<h2>11. Contact</h2>
-<p>Questions about these terms? Contact us at <a href="mailto:support@lastsignal.game">support@lastsignal.game</a></p>
-
-<p><a href="index.html">Back to Home</a> | <a href="privacy.html">Privacy Policy</a></p>
+        window.addEventListener('resize', resize);
+        init();
+        draw();
+    })();
+    </script>
 </body>
 </html>
