@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support &mdash; Last Signal</title>
+    <meta name="description" content="Get help with Last Signal. Report bugs, request features, or contact our team.">
+    <link rel="icon" type="image/png" href="app-icon-180.png">
+    <link rel="apple-touch-icon" href="app-icon-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00f0ff;
+            --cyan-dim: #00a5b0;
+            --cyan-glow: rgba(0, 240, 255, 0.15);
+            --purple: #a855f7;
+            --purple-dim: #7c3aed;
+            --magenta: #f472b6;
+            --orange: #fb923c;
+            --bg-deep: #030712;
+            --bg-card: rgba(10, 15, 30, 0.85);
+            --text: #c8d6e5;
+            --text-dim: #6b7a8d;
+            --border: rgba(0, 240, 255, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ═══ ANIMATED BACKGROUND ═══ */
+        .bg-stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .bg-stars::before, .bg-stars::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 10% 20%, rgba(200,220,255,0.4), transparent),
+                radial-gradient(1px 1px at 30% 60%, rgba(200,220,255,0.3), transparent),
+                radial-gradient(1.5px 1.5px at 50% 10%, rgba(200,220,255,0.5), transparent),
+                radial-gradient(1px 1px at 70% 40%, rgba(200,220,255,0.3), transparent),
+                radial-gradient(1px 1px at 90% 80%, rgba(200,220,255,0.4), transparent);
+            background-size: 200% 200%;
+            animation: drift 60s linear infinite;
+        }
+        .bg-stars::after {
+            background-image:
+                radial-gradient(1px 1px at 20% 50%, rgba(0,240,255,0.2), transparent),
+                radial-gradient(1px 1px at 60% 30%, rgba(168,85,247,0.15), transparent),
+                radial-gradient(1px 1px at 80% 70%, rgba(0,240,255,0.2), transparent);
+            animation: drift 90s linear infinite reverse;
+        }
+        @keyframes drift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,240,255,0.04) 0%, rgba(120,40,220,0.02) 40%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+        }
+
+        /* ═══ NAV ═══ */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-brand {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            color: var(--cyan);
+            text-decoration: none;
+            text-shadow: 0 0 20px rgba(0,240,255,0.3);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--cyan); }
+
+        /* ═══ HERO ═══ */
+        .page-hero {
+            position: relative;
+            z-index: 1;
+            padding: 10rem 2rem 4rem;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            letter-spacing: 0.08em;
+            background: linear-gradient(135deg, #fff 0%, var(--cyan) 60%, var(--purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .page-hero p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ═══ SIGNAL DIVIDER ═══ */
+        .signal-divider {
+            position: relative;
+            z-index: 1;
+            height: 1px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(90deg, transparent, var(--border), rgba(0,240,255,0.15), var(--border), transparent);
+        }
+        .signal-divider::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan);
+        }
+
+        /* ═══ CONTENT ═══ */
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ═══ FAQ CARDS ═══ */
+        .faq-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+        .faq-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .faq-card:hover {
+            border-color: rgba(0,240,255,0.25);
+            box-shadow: 0 0 20px rgba(0,240,255,0.05);
+        }
+        .faq-card.open .faq-answer {
+            max-height: 300px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+        .faq-card.open .faq-toggle {
+            transform: rotate(45deg);
+            color: var(--cyan);
+        }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .faq-question h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--cyan);
+        }
+        .faq-toggle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .faq-answer {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            font-size: 0.9rem;
+            line-height: 1.75;
+            color: var(--text-dim);
+        }
+
+        /* ═══ CONTACT SECTION ═══ */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .contact-card:hover {
+            border-color: rgba(0,240,255,0.25);
+            box-shadow: 0 0 25px rgba(0,240,255,0.08);
+            transform: translateY(-3px);
+        }
+        .contact-icon {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 1.2rem;
+            stroke: var(--cyan);
+            fill: none;
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 8px rgba(0,240,255,0.3));
+        }
+        .contact-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .contact-card p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+        }
+
+        /* ═══ STATUS INDICATOR ═══ */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 12px rgba(74,222,128,0.5);
+            animation: status-pulse 2s ease-in-out infinite;
+        }
+        @keyframes status-pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .status-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #4ade80;
+        }
+
+        /* ═══ FOOTER ═══ */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer-brand {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--cyan); }
+        .footer-copy {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            opacity: 0.6;
+        }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 768px) {
+            nav { padding: 0.8rem 1.2rem; }
+            .nav-links { gap: 1rem; }
+            .page-hero { padding: 8rem 1.5rem 3rem; }
+            .content { padding: 3rem 1.5rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .nav-links { display: none; }
+        }
+
+        /* ═══ ANIMATIONS ═══ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+<div class="bg-stars"></div>
+<div class="bg-glow"></div>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+    <a href="index.html" class="nav-brand">LAST SIGNAL</a>
+    <ul class="nav-links">
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#lore">Lore</a></li>
+        <li><a href="index.html#download">Download</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+    <h1>SUPPORT HQ</h1>
+    <p>Signal interference? Lost frequency? We're here to help you get back on the broadcast.</p>
+</div>
+
+<div class="signal-divider"></div>
+
+<!-- FAQ -->
+<div class="content">
+    <div class="reveal">
+        <div class="section-label">// Frequently asked</div>
+        <h2 class="section-title">Common Transmissions</h2>
+    </div>
+
+    <div class="faq-grid">
+        <div class="faq-card reveal" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>When does Last Signal launch?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                We're currently in active development. Sign up on our homepage to be the first to know when we enter beta and when the full launch drops. We'll also announce on our social channels.
+            </div>
+        </div>
+
+        <div class="faq-card reveal reveal-delay-1" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>What platforms will the game be on?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Last Signal is being built for iOS and Android first. We're designing for mobile-first gameplay with touch controls optimized for fast-paced wave survival. Other platforms may follow based on community demand.
+            </div>
+        </div>
+
+        <div class="faq-card reveal reveal-delay-2" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>Is the game really free to play?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Yes. The full game is free to download and play with no content paywalls. We offer optional cosmetic purchases and convenience items, but nothing that affects gameplay balance. You can experience every weapon, upgrade, and story fragment without spending a cent.
+            </div>
+        </div>
+
+        <div class="faq-card reveal reveal-delay-3" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>How do I report a bug?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Send us an email at the address below with "BUG REPORT" in the subject line. Include your device model, OS version, and a description of what happened. Screenshots or screen recordings are incredibly helpful. We read every report.
+            </div>
+        </div>
+
+        <div class="faq-card reveal" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>Can I request a feature?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Absolutely. Drop us an email with "FEATURE REQUEST" in the subject. We genuinely track every suggestion. Some of our best ideas have come from early community feedback. Your signal matters.
+            </div>
+        </div>
+
+        <div class="faq-card reveal reveal-delay-1" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>My progress was lost. Can it be recovered?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                If you were signed in with a cloud save account, your progress should sync automatically. If you're experiencing sync issues, make sure you have a stable connection and try restarting the app. For persistent issues, contact us with your player ID and we'll investigate.
+            </div>
+        </div>
+
+        <div class="faq-card reveal reveal-delay-2" onclick="this.classList.toggle('open')">
+            <div class="faq-question">
+                <h3>How does the upgrade system work?</h3>
+                <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+                Each run, you earn signal fragments and experience. Between runs, you can spend these on permanent upgrades that carry forward. During runs, you choose from randomized power-ups at each level. The combination of permanent progression and per-run choices means every session feels different.
+            </div>
+        </div>
+    </div>
+
+    <div class="signal-divider" style="margin-bottom: 4rem;"></div>
+
+    <!-- CONTACT -->
+    <div class="reveal">
+        <div class="section-label">// Open channel</div>
+        <h2 class="section-title">Reach Our Frequency</h2>
+    </div>
+
+    <div class="contact-grid">
+        <a href="mailto:trainyouragent@gmail.com" class="contact-card reveal">
+            <svg class="contact-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <h3>Email</h3>
+            <p>General inquiries, bug reports, and feature requests. We respond within 48 hours.</p>
+        </a>
+
+        <a href="https://discord.gg/" class="contact-card reveal reveal-delay-1">
+            <svg class="contact-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <h3>Community</h3>
+            <p>Join other signal operators. Share builds, strategies, and lore theories. Discord coming soon.</p>
+        </a>
+
+        <a href="https://twitter.com/" class="contact-card reveal reveal-delay-2">
+            <svg class="contact-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M20 4l-6.768 6.768"/>
+            </svg>
+            <h3>Updates</h3>
+            <p>Follow us for dev logs, sneak peeks, and launch announcements. Social links coming soon.</p>
+        </a>
+    </div>
+
+    <div class="status-bar reveal">
+        <div class="status-dot"></div>
+        <span class="status-text">All Systems Operational</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-brand">LAST SIGNAL</div>
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="mailto:trainyouragent@gmail.com">Contact</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 Last Signal. All rights reserved.</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
